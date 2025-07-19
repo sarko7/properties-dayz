@@ -77,10 +77,22 @@ Crée une classe orientée objet côté serveur pour représenter une propriét�
 ### 🤔 Questions à te poser
 
 - Quelles données dois-je stocker ? (propriétés, type, position, owner, etc.)
+  - UUID : id de la propriété (clé unique)
+  - type : Appartement, garage, maison, entrepôt (pour gérer les spécificités en fonction du type)
+  - owner : licence du joueur
+  - position : point d'entrée (extérieur), panneau d'information (le reste est géré en config)
+  - shellName : nom du shell qui permet d'aller rechercher des informations en configuration (position de sortie, poids du coffre, position de gestion, position du coffre)
+  - statut : owned (acheté), rental (un locataire y réside), vacant (libre à l'achat et à la visite)
+  - rentalDeadline : la date au quelle le logement sera remis a la vente ou a la location 
+  - address : l'adresse où se trouve la propriété
 - Comment représenter les shells ? (nom, enums ?)
+  - Je représenterais personnellement les shells sous forme de string (leur nom)
 - Est-ce que chaque propriété est chargée au démarrage du serveur ?
+  - Oui, les propriétés sont chargées quand le côté serveur démarre, il fetch toutes les données et les met sous forme d'instances d'une classe (appelée Property)
 - Est-ce que je stocke des données côté joueur ? Si oui, où ?
+  - Oui, après le fetch côté serveur, les données nécessaires (les coords, le statut, l'adresse)
 - Quand est-ce que je sauve les changements (achat, entrée, etc.) ?
+  - Pour sauvegarder les informations, cela dépend : l'achat, je le fais directement via une requête SQL, et tout ce qui dépend de la propriété elle-même. Pour les actions comme entrer/sortir, je get les données via un callback, pour éviter les exploits
 
 > ✍️ _Écris tes structures de données en Lua ici ou dans `/docs/db_structure.md`_
 ---
