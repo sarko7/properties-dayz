@@ -19,9 +19,9 @@ Créer un système complet de gestion de propriétés dans FiveM (backend et cli
 
 ### 1. ✨ Création de propriété
 
-- [ ] Génération d’un identifiant **unique** (UUIDv4)
+- [ ] Génération d’un identifiant **unique** (UUIDv4) (Good)
 - [ ] Numéro d’habitation (ex: "25")
-- [ ] Nom d’affichage = **nom de la rue**
+- [ ] Nom d’affichage = **nom de la rue** 
 - [ ] Choix de l’**intérieur** (`shell`) parmi une liste définie
 - [ ] Position personnalisée pour le **stockage**
   - ❗ *Tu dois seulement émettre un `TriggerEvent("property:storageAccess")` pour simuler l'accès*
