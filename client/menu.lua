@@ -5,6 +5,9 @@ local builderProperty = RageUI.CreateSubMenu(choosePropertyType, nil, "Création
 local coordsProperty = RageUI.CreateSubMenu(builderProperty, nil, "Choisir le position", 0, 0)
 local chooseInteriorProperty = RageUI.CreateSubMenu(builderProperty, nil, "Choisir l'intérieur", 0, 0)
 
+streetProperty = nil
+propertyNumber = nil
+
 newProperty = {}
 
 function openPropertyCreator(gradeName, gradeData)
@@ -39,7 +42,8 @@ function openPropertyCreator(gradeName, gradeData)
                         onSelected = function()
                             newProperty.type = typeName
                             newProperty.position = {}
-                            newProperty.price = {}
+                            streetProperty = nil
+                            propertyNumber = nil
                         end
                     }, builderProperty)
                 end
@@ -47,25 +51,25 @@ function openPropertyCreator(gradeName, gradeData)
             end)
 
             RageUI.IsVisible(builderProperty, function()
-                if newProperty.type and newProperty.position and newProperty.price then
+                if newProperty.type and newProperty.position then
 
                     RageUI.Button("Chosir l'intérieur", nil, {RightLabel = not newProperty.shellLabel and nil or newProperty.shellLabel}, true, {}, chooseInteriorProperty)
 
-                    RageUI.Button("Le numéro de properiété", nil, {RightLabel = not newProperty.propertyNumber and nil or newProperty.propertyNumber}, true, {
+                    RageUI.Button("Le numéro de properiété", nil, {RightLabel = not propertyNumberr and nil or propertyNumber}, true, {
                         onSelected = function ()
-                            newProperty.propertyNumber = keyboardInput("Entrer le numéro de la propriété", nil, 3)
+                            propertyNumber = keyboardInput("Entrer le numéro de la propriété", nil, 3)
                         end
                     })
 
-                    RageUI.Button("Prix de vente", nil, {RightLabel = not newProperty.price.sell and nil or ("~g~%s$"):format(newProperty.price.sell or 0)}, true, {
+                    RageUI.Button("Prix de vente", nil, {RightLabel = not newProperty.price_sell and nil or ("~g~%s$"):format(newProperty.price_sell or 0)}, true, {
                         onSelected = function()
-                            newProperty.price.sell = keyboardInput("Entrer le prix de vente", nil, 10)
+                            newProperty.price_sell = keyboardInput("Entrer le prix de vente", nil, 10)
                         end
                     })
 
-                    RageUI.Button("Prix a la location", nil, {RightLabel = not newProperty.price.rental and nil or ("~b~%s$"):format(newProperty.price.rental or 0)}, true, {
+                    RageUI.Button("Prix a la location", nil, {RightLabel = not newProperty.price_rental and nil or ("~b~%s$"):format(newProperty.price_rental or 0)}, true, {
                         onSelected = function()
-                            newProperty.price.rental = keyboardInput("Entrer le prix a la locaiton par jour", nil, 10)
+                            newProperty.price_rental = keyboardInput("Entrer le prix a la locaiton par jour", nil, 10)
                         end
                     })
 
@@ -91,7 +95,7 @@ function openPropertyCreator(gradeName, gradeData)
                             local playerCoords = GetEntityCoords(PlayerPedId())
                             local playerStreet, crossingRoad = GetStreetNameAtCoord(playerCoords.x , playerCoords.y, playerCoords.z)
                             local streetName = GetStreetNameFromHashKey(playerStreet)
-                            newProperty.address = streetName
+                            streetProperty = streetName
                             newProperty.position.entryPos = playerCoords
                         end
                     })
@@ -114,11 +118,10 @@ function openPropertyCreator(gradeName, gradeData)
                     RageUI.Button("Valider la création", nil, {RightBadge = RageUI.BadgeStyle.Tick}, true, {
                         onSelected = function()
                             if hasValidPropertyData() then
+                                newProperty.address = ("%s %s"):format(propertyNumber, streetProperty)
                                 TriggerServerEvent("property:createPoperty", newProperty)
                                 newProperty = {}
                                 RageUI.GoBack()
-                            else
-                                print("Les data ne sont pas tout remplie")
                             end
                         end
                     })

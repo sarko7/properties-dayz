@@ -1,40 +1,18 @@
-propertyList = {}
-
-function generateUUID()
-    local random = math.random
-    local template = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
-
-    return string.gsub(template, "[xy]", function(c)
-        local v = (c == "x") and random(0, 15) or random(8, 11)
-        return string.format("%x", v)
-    end)
-end
-
-function sendNewProperty()
-    
-end
-
-function createProperty(type, position, shellName, adresse)
-    local uuid = propertyHasUuid()
-
-
-end
-
-function propertyHasUuid()
-    local uuid = generateUUID()
-
-    for i = 1, #propertyList do
-        local property = propertyList[i]
-
-        if property.uuid == uuid then
-            propertyHasUuid()
-        end
-    end
-    return uuid
-end
-
 RegisterNetEvent("property:getPropertys", function()
-    TriggerClientEvent("property:sendPropertys", source, propertyList)
+    TriggerClientEvent("property:sendPropertys", source, PropertyList)
+
+    print(json.encode(PropertyList, {indent = true}))
+end)
+
+RegisterNetEvent("property:createPoperty", function(newProperty)
+    createProperty(newProperty)
+
+    newProperty.id = currentId
+    currentId += 1
+    PropertyList[#PropertyList+1] = newProperty
+    TriggerClientEvent("property:sendNewProperty", -1, newProperty)
+
+    print(json.encode(PropertyList, {indent = true}))
 end)
 
 AddEventHandler('onResourceStart', function(resourceName)
@@ -42,7 +20,8 @@ AddEventHandler('onResourceStart', function(resourceName)
         return
     end
     
-    MySQL.query('SELECT * FROM `property`', function(propertys)
-        propertyList = propertys
-    end)
+    local propertys = MySQL.query.await('SELECT * FROM `property`')
+
+    reformatPropertyData(propertys)
+
 end)

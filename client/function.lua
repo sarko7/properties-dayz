@@ -24,7 +24,7 @@ function hasValidPropertyData()
         return false
     end
 
-    if not newProperty.address or not newProperty.propertyNumber or not newProperty.shellName then
+    if not streetProperty or not propertyNumber or not newProperty.shellName then
         return false
     end
 
@@ -32,7 +32,7 @@ function hasValidPropertyData()
         return false
     end
 
-    if not newProperty.price or not newProperty.price.rental or not newProperty.price.sell then
+    if not newProperty.price_rental or not newProperty.price_sell then
         return false
     end
 

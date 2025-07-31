@@ -49,3 +49,5 @@ Config.PropertyList = {
         coords = vector3(976.636, 70.295, 115.164)
     },
 }
+
+Config.minId = 500
