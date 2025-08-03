@@ -46,7 +46,7 @@ Config.PropertyList = {
         name = "vw_casino_penthouse",
         label = "Penthouse",
         category = "house",
-        coords = vector3(976.636, 70.295, 115.164)
+        coords = vector3(980.5400, 56.6675, 116.1642)
     },
 }
 

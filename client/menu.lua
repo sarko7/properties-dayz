@@ -10,7 +10,7 @@ propertyNumber = nil
 
 newProperty = {}
 
-function openPropertyCreator(gradeName, gradeData)
+function openPropertyCreator()
     if menuAdminState then return end
 
     mainPropertyCreator.Closed = function()

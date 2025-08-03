@@ -5,14 +5,26 @@ RegisterNetEvent("property:getPropertys", function()
 end)
 
 RegisterNetEvent("property:createPoperty", function(newProperty)
-    createProperty(newProperty)
-
-    newProperty.id = currentId
-    currentId += 1
     PropertyList[#PropertyList+1] = newProperty
-    TriggerClientEvent("property:sendNewProperty", -1, newProperty)
 
-    print(json.encode(PropertyList, {indent = true}))
+    Property:CreateProperty(true, newProperty)
+    TriggerClientEvent("property:sendNewProperty", -1, newProperty)
+end)
+
+RegisterNetEvent("property:entry", function(id)
+    local property = findPropertyById(id)
+
+    if property then
+        property:Entry(source)
+    end
+end)
+
+RegisterNetEvent("property:exit", function(id)
+    local property = findPropertyById(id)
+
+    if property then
+        property:Exit(source)
+    end
 end)
 
 AddEventHandler('onResourceStart', function(resourceName)
@@ -22,6 +34,9 @@ AddEventHandler('onResourceStart', function(resourceName)
     
     local propertys = MySQL.query.await('SELECT * FROM `property`')
 
-    reformatPropertyData(propertys)
-
+    for i = 1, #propertys do
+        local property = propertys[i]
+        property.position = json.decode(property.position)
+        Property:CreateProperty(false, property)
+    end
 end)

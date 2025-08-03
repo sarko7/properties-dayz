@@ -38,3 +38,8 @@ function hasValidPropertyData()
 
     return true
 end
+
+function drawTextUI(text)
+    AddTextEntry("HelpNotification", text or "null")
+    DisplayHelpTextThisFrame("HelpNotification", false)
+end
