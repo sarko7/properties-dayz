@@ -18,6 +18,15 @@ RegisterNetEvent("property:sendNewProperty", function(property)
     print(json.encode(property, {indent = true}))
 end)
 
+RegisterNetEvent("property:onEntry", function(shellName, id)
+    print("Arriver client side des property current : Name :"..shellName.." ID :"..id)
+
+    onProperty= {
+        name = shellName,
+        id = id
+    }
+end)
+
 CreateThread(function()
     local sleep = 1000
     while true do
@@ -39,25 +48,24 @@ CreateThread(function()
 
                     if (IsControlJustPressed(0, 51)) then
                         TriggerServerEvent("property:entry", property.id)
-                        onProperty = property.shellName
                     end
                 end
             end
+        end
 
-            if onProperty then
-                local exitDist = #(Config.PropertyList[onProperty].coords - playerCoords)
+        if onProperty then
+            local exitDist = #(Config.PropertyList[onProperty.name].coords - playerCoords)
 
-                if exitDist <= 10.0 then
-                    sleep = 0
-                    DrawMarker(25, Config.PropertyList[onProperty].coords - vec3(0, 0, 0.98), 0, 0, 0, 0, 0, 0, 0.6, 0.6, 0.6, 255, 0, 0, 180)
+            if exitDist <= 10.0 then
+                sleep = 0
+                DrawMarker(25, Config.PropertyList[onProperty.name].coords - vec3(0, 0, 0.98), 0, 0, 0, 0, 0, 0, 0.6, 0.6, 0.6, 255, 0, 0, 180)
 
-                    if exitDist <= 2.0 then
-                        drawTextUI("Appuyer sur ~INPUT_CONTEXT~ pour sortir dans la propriété")
+                if exitDist <= 2.0 then
+                    drawTextUI("Appuyer sur ~INPUT_CONTEXT~ pour sortir dans la propriété")
 
-                        if (IsControlJustPressed(0, 51)) then
-                            TriggerServerEvent("property:exit", property.id)
-                            onProperty = nil
-                        end
+                    if (IsControlJustPressed(0, 51)) then
+                        TriggerServerEvent("property:exit", onProperty.id)
+                        onProperty = nil
                     end
                 end
             end

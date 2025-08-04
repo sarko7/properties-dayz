@@ -45,6 +45,10 @@ end
 function Property:Exit(src)
     local entityId = GetPlayerPed(src)
 
+    print(self.shellName)
+
+    print(self.id)
+
     SetPlayerRoutingBucket(src, 0)
     SetEntityCoords(entityId, self.position.entryPos.x, self.position.entryPos.y, self.position.entryPos.z)
 end
@@ -53,6 +57,7 @@ function Property:Entry(src)
     local entityId = GetPlayerPed(src)
 
     SetPlayerRoutingBucket(src, self.id)
+
     SetEntityCoords(entityId, Config.PropertyList[self.shellName].coords)
 end
 

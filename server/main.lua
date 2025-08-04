@@ -16,6 +16,7 @@ RegisterNetEvent("property:entry", function(id)
 
     if property then
         property:Entry(source)
+        TriggerClientEvent("property:onEntry", source, property.shellName, property.id)
     end
 end)
 

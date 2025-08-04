@@ -25,11 +25,7 @@ function openPropertyCreator()
 
             RageUI.IsVisible(mainPropertyCreator, function()
 
-                RageUI.Button("Crée une propriété", nil, {}, true, {
-                    onSelected = function()
-                        newProperty = {}
-                    end
-                }, choosePropertyType)
+                RageUI.Button("Crée une propriété", nil, {}, true, {}, choosePropertyType)
 
                 RageUI.Button("Liste des propriétés", nil, {}, true, {})
 
@@ -40,6 +36,7 @@ function openPropertyCreator()
                 for typeName, typeLabel in pairs(Config.PropertyType) do
                     RageUI.Button(("Crée un %s"):format(typeLabel), nil, {}, true, {
                         onSelected = function()
+                            newProperty = {}
                             newProperty.type = typeName
                             newProperty.position = {}
                             streetProperty = nil
