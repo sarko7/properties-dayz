@@ -1,8 +1,10 @@
 PropertyList = {}
+PropertyPanel = {}
 onProperty = nil
 
 RegisterNetEvent("property:sendPropertys", function(propertys)
     PropertyList = propertys
+    CreateSellPanel(PropertyList)
 end)
 
 AddEventHandler('onClientResourceStart', function(resourceName)
@@ -15,6 +17,7 @@ end)
 
 RegisterNetEvent("property:sendNewProperty", function(property)
     PropertyList[#PropertyList+1] = property
+    CreateSellPanel({property})
     print(json.encode(property, {indent = true}))
 end)
 
@@ -47,7 +50,10 @@ CreateThread(function()
                     drawTextUI("Appuyer sur ~INPUT_CONTEXT~ pour renter dans la propriété")
 
                     if (IsControlJustPressed(0, 51)) then
-                        TriggerServerEvent("property:entry", property.id)
+                        ESX.TriggerServerCallback('property:IsOwner', function(isOwner)
+                            print(property.statue)
+                            openAccesPropertyMenu(property.id, property.address, isOwner, property.statue, property.price_buy, property.price_rental)
+                        end, property.id)
                     end
                 end
             end

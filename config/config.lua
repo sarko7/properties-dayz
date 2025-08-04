@@ -44,6 +44,4 @@ Config.PropertyList = {
     },
 }
 
-
-
 Config.minId = 500

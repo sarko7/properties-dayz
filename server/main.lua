@@ -5,8 +5,8 @@ RegisterNetEvent("property:getPropertys", function()
 end)
 
 RegisterNetEvent("property:createPoperty", function(newProperty)
+    newProperty.statue = 0
     PropertyList[#PropertyList+1] = newProperty
-
     Property:CreateProperty(true, newProperty)
     TriggerClientEvent("property:sendNewProperty", -1, newProperty)
 end)
@@ -16,7 +16,6 @@ RegisterNetEvent("property:entry", function(id)
 
     if property then
         property:Entry(source)
-        TriggerClientEvent("property:onEntry", source, property.shellName, property.id)
     end
 end)
 
@@ -26,6 +25,16 @@ RegisterNetEvent("property:exit", function(id)
     if property then
         property:Exit(source)
     end
+end)
+
+RegisterNetEvent("property:buy", function(id)
+    local property = findPropertyById(id)
+
+    if not property then
+        return
+    end
+
+    property:Buy(source)
 end)
 
 AddEventHandler('onResourceStart', function(resourceName)

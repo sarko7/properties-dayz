@@ -20,18 +20,18 @@ Créer un système complet de gestion de propriétés dans FiveM (backend et cli
 ### 1. ✨ Création de propriété
 
 - [ ] Génération d’un identifiant **unique** (UUIDv4) (Good)
-- [ ] Numéro d’habitation (ex: "25")
-- [ ] Nom d’affichage = **nom de la rue** 
-- [ ] Choix de l’**intérieur** (`shell`) parmi une liste définie
-- [ ] Position personnalisée pour le **stockage**
-  - ❗ *Tu dois seulement émettre un `TriggerEvent("property:storageAccess")` pour simuler l'accès*
-- [ ] Position du **panneau "à vendre / à louer"**
-  - Il doit **disparaître une fois la maison vendue ou louée**
-- [ ] Propriété peut être **vendue ou louée**
+- [ ] Numéro d’habitation (ex: "25") (Good)
+- [ ] Nom d’affichage = **nom de la rue**  (Good)
+- [ ] Choix de l’**intérieur** (`shell`) parmi une liste définie (Good)
+- [ ] Position personnalisée pour le **stockage** (Good)
+  - ❗ *Tu dois seulement émettre un `TriggerEvent("property:storageAccess")` pour simuler l'accès* 
+- [ ] Position du **panneau "à vendre / à louer"** (Good)
+  - Il doit **disparaître une fois la maison vendue ou louée** (Good)
+- [ ] Propriété peut être **vendue ou louée** (Good)
 
 ### 2. 📦 Classe `Property`
 
-Crée une classe orientée objet côté serveur pour représenter une propriété.
+Crée une classe orientée objet côté serveur pour représenter une propriété. (Good)
 
 > 🧠 **Réflexion à avoir :**
 > - Comment représenter différents types de propriété ?
@@ -48,8 +48,8 @@ Crée une classe orientée objet côté serveur pour représenter une propriét�
 
 ### 3. 🚪 Entrée dans la propriété (instanciation joueur)
 
-- [ ] Quand un joueur ent
-- [ ] Gérer la téléportation dans le shell
+- [ ] Quand un joueur ent (Good)
+- [ ] Gérer la téléportation dans le shell (Good)
 
 ---
 

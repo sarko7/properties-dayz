@@ -11,7 +11,7 @@ propertyNumber = nil
 newProperty = {}
 
 function openPropertyCreator()
-    if menuAdminState then return end
+    if menuState then return end
 
     mainPropertyCreator.Closed = function()
         menuState = false
@@ -58,9 +58,9 @@ function openPropertyCreator()
                         end
                     })
 
-                    RageUI.Button("Prix de vente", nil, {RightLabel = not newProperty.price_sell and nil or ("~g~%s$"):format(newProperty.price_sell or 0)}, true, {
+                    RageUI.Button("Prix de vente", nil, {RightLabel = not newProperty.price_buy and nil or ("~g~%s$"):format(newProperty.price_buy or 0)}, true, {
                         onSelected = function()
-                            newProperty.price_sell = keyboardInput("Entrer le prix de vente", nil, 10)
+                            newProperty.price_buy = keyboardInput("Entrer le prix de vente", nil, 10)
                         end
                     })
 
@@ -153,3 +153,61 @@ end
 RegisterCommand("property", function(source, args, rawCommand)
     openPropertyCreator()
 end, false)
+
+local menuAccesPropertyState = false
+local menuAccesProperty = RageUI.CreateMenu(nil, "Acceder a la properiété", 0, 0)
+
+function openAccesPropertyMenu(propertyId, adresse, isOwner, statue, sellPrice, rentalPrice)
+    if menuAccesPropertyState then return end
+
+    FreezeEntityPosition(PlayerPedId(), true)
+
+    menuAccesProperty.Closed = function()
+        FreezeEntityPosition(PlayerPedId(), false)
+        menuAccesPropertyState = false
+        RageUI.Visible(menuAccesProperty, false)
+    end
+
+    menuAccesPropertyState = true
+    RageUI.Visible(menuAccesProperty, true)
+
+    CreateThread(function()
+        while menuAccesPropertyState do
+
+            RageUI.IsVisible(menuAccesProperty, function()
+
+                RageUI.Separator(adresse)
+
+                RageUI.Line()
+
+                if isOwner then
+
+                    RageUI.Button("Entrer dans la properiété", nil, {}, true, {
+                        onSelected = function()
+                            TriggerServerEvent("property:entry", propertyId)
+                            menuAccesProperty.Closed()
+                        end
+                    })
+
+                elseif statue == 0 then
+                    RageUI.Button("Acheter la propriété", nil, {RightLabel = ("~g~%s$"):format(sellPrice)}, true, {
+                        onSelected = function()
+                            TriggerServerEvent("property:buy", propertyId)
+                            menuAccesProperty.Closed()
+                        end
+                    })
+
+                    RageUI.Button("Louer la propriété", nil, {RightLabel = ("~b~%s$"):format(rentalPrice)}, true, {
+                        onSelected = function()
+
+                        end
+                    })
+                end
+
+
+            end)
+
+            Wait(0)
+        end
+    end)
+end
