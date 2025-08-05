@@ -7,7 +7,7 @@ local chooseInteriorProperty = RageUI.CreateSubMenu(builderProperty, nil, "Chois
 
 streetProperty = nil
 propertyNumber = nil
-
+rentDuration = 50
 newProperty = {}
 
 function openPropertyCreator()
