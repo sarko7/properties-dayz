@@ -78,3 +78,12 @@ function GetEntityAtCoords(coords, raduis)
 
     return obj
 end
+
+function findPropertyById(id)
+    for i = 1, #PropertyList do
+        if PropertyList[i].id == id then
+            return PropertyList[i]
+        end
+    end
+    return nil
+end

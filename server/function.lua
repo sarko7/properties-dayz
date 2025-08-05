@@ -75,7 +75,7 @@ function Property:Buy(src)
 
     xPlayer.removeAccountMoney("bank", self.price_buy)
     self:SaveBuyProperty(xPlayer.getIdentifier())
-    TriggerClientEvent("property:onBuyProperty", src, self.position.panelPos)
+    TriggerClientEvent("property:onAcquisition", -1, self.id, 1)
 end
 
 function Property:Rental(src, rentalDays)
@@ -93,6 +93,7 @@ function Property:Rental(src, rentalDays)
 
     xPlayer.removeAccountMoney("bank", totalPrice)
     self:SaveRentalProperty(xPlayer.getIdentifier(), timestamp)
+    TriggerClientEvent("property:onAcquisition", -1, self.id, 2)
 end
 
 function Property:SaveBuyProperty(license)
@@ -111,7 +112,7 @@ function Property:SaveRentalProperty(license, timestamp)
         self.UUID
     })
 
-    self.rental_deadline, self.statue = timestamp, 2
+    self.owner, self.rental_deadline, self.statue = license, timestamp, 2
 end
 
 function Property:GetIsOwner(src)
@@ -173,6 +174,7 @@ function findPropertyById(id)
     end
     return nil
 end
+
 
 ESX.RegisterServerCallback('property:IsOwner', function(src, cb, propertyId)
     local property = findPropertyById(propertyId)
