@@ -60,13 +60,13 @@ function openPropertyCreator()
 
                     RageUI.Button("Prix de vente", nil, {RightLabel = not newProperty.price_buy and nil or ("~g~%s$"):format(newProperty.price_buy or 0)}, true, {
                         onSelected = function()
-                            newProperty.price_buy = keyboardInput("Entrer le prix de vente", nil, 10)
+                            newProperty.price_buy = tonumber(keyboardInput("Entrer le prix de vente", nil, 10))
                         end
                     })
 
                     RageUI.Button("Prix a la location", nil, {RightLabel = not newProperty.price_rental and nil or ("~b~%s$"):format(newProperty.price_rental or 0)}, true, {
                         onSelected = function()
-                            newProperty.price_rental = keyboardInput("Entrer le prix a la locaiton par jour", nil, 10)
+                            newProperty.price_rental = tonumber(keyboardInput("Entrer le prix a la locaiton par jour", nil, 10))
                         end
                     })
 
@@ -199,7 +199,9 @@ function openAccesPropertyMenu(propertyId, adresse, isOwner, statue, sellPrice, 
 
                     RageUI.Button("Louer la propriété", nil, {RightLabel = ("~b~%s$"):format(rentalPrice)}, true, {
                         onSelected = function()
-
+                            rentalDays = tonumber(keyboardInput("Entrer le nomnre de jour que vous souhaitez louer", nil, 10))
+                            print(rentalDays)
+                            TriggerServerEvent("property:rental", propertyId, rentalDays)
                         end
                     })
                 end

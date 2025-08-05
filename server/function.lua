@@ -32,6 +32,7 @@ function Property:CreateProperty(isNew, newProperty)
 
     local instance = newProperty
     setmetatable(instance, {__index = Property})
+    PropertyList[#PropertyList+1] = newProperty
 
     if isNew then
         local uuid = generateUUID()
@@ -39,7 +40,9 @@ function Property:CreateProperty(isNew, newProperty)
         saveProperty(uuid, newProperty)
     end
 
-    PropertyList[#PropertyList+1] = newProperty
+    if newProperty.statue == 2 then
+        newProperty:getRentalDeadline()
+    end
 end
 
 function Property:Exit(src)
@@ -50,7 +53,7 @@ end
 
 function Property:Entry(src)
     if not self:GetIsOwner(src) then
-        return print("Pas owner")
+        return
     end
 
     local entityId = GetPlayerPed(src)
@@ -75,6 +78,23 @@ function Property:Buy(src)
     TriggerClientEvent("property:onBuyProperty", src, self.position.panelPos)
 end
 
+function Property:Rental(src, rentalDays)
+    local xPlayer = ESX.GetPlayerFromId(src)
+    local totalPrice = self.price_rental * rentalDays
+    local timestamp = os.time() + (rentalDays * 24 * 60 * 60)
+
+    if not xPlayer then
+        return
+    end
+
+    if xPlayer.getAccount("bank").money < totalPrice then
+        return
+    end
+
+    xPlayer.removeAccountMoney("bank", totalPrice)
+    self:SaveRentalProperty(xPlayer.getIdentifier(), timestamp)
+end
+
 function Property:SaveBuyProperty(license)
     MySQL.update.await('UPDATE property SET owner = ?, statue = 1 WHERE UUID = ?', {
         license,
@@ -82,6 +102,16 @@ function Property:SaveBuyProperty(license)
     })
 
     self.owner, self.statue = license, 1
+end
+
+function Property:SaveRentalProperty(license, timestamp)
+    MySQL.update.await('UPDATE property SET owner = ?, statue = 2, rental_deadline = ? WHERE UUID = ?', {
+        license,
+        timestamp,
+        self.UUID
+    })
+
+    self.rental_deadline, self.statue = timestamp, 2
 end
 
 function Property:GetIsOwner(src)
@@ -98,11 +128,36 @@ function Property:GetIsOwner(src)
     return true
 end
 
+function Property:getRentalDeadline()
+    local deadline = self.rental_deadline
+    local year, month, day = os.date("%Y", deadline), os.date("%m", deadline), os.date("%d", deadline)
+
+    if year < os.date("%Y") then
+        return
+    end
+
+    if month < os.date("%m") then
+        return
+    end
+
+    if day < os.date("%d") then
+        return
+    end
+
+    self:ResetRental()
+end
+
+function Property:ResetRental()
+    MySQL.update.await('UPDATE property SET owner = null, statue = 0, rental_deadline = null WHERE UUID = ?')
+
+    self.rental_deadline, self.owner, self.statue = nil, nil, 0
+end
+
 function saveProperty(uuid, newProperty)
     local property = MySQL.insert.await('INSERT INTO `property` (UUID, type, price_buy, price_rental, position, shellName, address) VALUES (?, ?, ?, ?, ?, ?, ?)', {
         uuid, 
         newProperty.type, 
-        newProperty.price_sell,
+        newProperty.price_buy,
         newProperty.price_rental,
         json.encode(newProperty.position),
         newProperty.shellName,

@@ -1,7 +1,6 @@
 RegisterNetEvent("property:getPropertys", function()
     TriggerClientEvent("property:sendPropertys", source, PropertyList)
 
-    print(json.encode(PropertyList, {indent = true}))
 end)
 
 RegisterNetEvent("property:createPoperty", function(newProperty)
@@ -35,6 +34,16 @@ RegisterNetEvent("property:buy", function(id)
     end
 
     property:Buy(source)
+end)
+
+RegisterNetEvent("property:rental", function(id, rentalDays)
+    local property = findPropertyById(id)
+
+    if not property then
+        return
+    end
+
+    property:Rental(source, rentalDays)
 end)
 
 
