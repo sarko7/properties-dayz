@@ -27,19 +27,19 @@ function propertyHasUuid()
 end
 
 function Property:CreateProperty(isNew, newProperty)
-    local uuid = generateUUID()
-    newProperty.UUID = uuid
     newProperty.id = currentId
     currentId += 1
 
     local instance = newProperty
     setmetatable(instance, {__index = Property})
 
-    PropertyList[#PropertyList+1] = newProperty
-
     if isNew then
+        local uuid = generateUUID()
+        newProperty.UUID = uuid
         saveProperty(uuid, newProperty)
     end
+
+    PropertyList[#PropertyList+1] = newProperty
 end
 
 function Property:Exit(src)
@@ -65,21 +65,25 @@ function Property:Buy(src)
     if not xPlayer then
         return
     end
-    
-    print(self.price_buy)
-
-    print("Agent sur joueur : "..xPlayer.getAccount("bank").money)
 
     if xPlayer.getAccount("bank").money < self.price_buy then
         return
     end
 
     xPlayer.removeAccountMoney("bank", self.price_buy)
-    saveBuyProperty(self.UUID, xPlayer.getIdentifier())
+    self:SaveBuyProperty(xPlayer.getIdentifier())
+end
+
+function Property:SaveBuyProperty(license)
+    MySQL.update.await('UPDATE property SET owner = ?, statue = 1 WHERE UUID = ?', {
+        license,
+        self.UUID
+    })
+
+    self.owner, self.statue = license, 1
 end
 
 function Property:GetIsOwner(src)
-    
     local xPlayer = ESX.GetPlayerFromId(src)
 
     if not xPlayer then
@@ -129,10 +133,3 @@ ESX.RegisterServerCallback('property:IsOwner', function(src, cb, propertyId)
 
     cb(true)
 end)
-
-function saveBuyProperty(uuid, license)
-    MySQL.update('UPDATE property SET owner = ?, statue = 1 WHERE UUID = ?', {
-        license,
-        uuid
-    })
-end
