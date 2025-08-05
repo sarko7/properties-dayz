@@ -72,6 +72,7 @@ function Property:Buy(src)
 
     xPlayer.removeAccountMoney("bank", self.price_buy)
     self:SaveBuyProperty(xPlayer.getIdentifier())
+    TriggerClientEvent("property:onBuyProperty", src, self.position.panelPos)
 end
 
 function Property:SaveBuyProperty(license)

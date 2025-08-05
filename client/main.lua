@@ -30,6 +30,16 @@ RegisterNetEvent("property:onEntry", function(shellName, id)
     }
 end)
 
+RegisterNetEvent("property:onBuyProperty", function(panelPosition)
+    local panel = GetEntityAtCoords(panelPosition, 2.0)
+
+    if panel then
+        DeleteEntity(panel)
+    else
+        print("Pas d'entity")
+    end
+end)
+
 CreateThread(function()
     local sleep = 1000
     while true do

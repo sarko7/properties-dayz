@@ -68,3 +68,13 @@ function CreateSellPanel(propertys)
         end
     end
 end
+
+function GetEntityAtCoords(coords, raduis)
+    local obj = GetClosestObjectOfType(coords.x, coords.y, coords.z, raduis, "prop_forsale_sign_05")
+
+    if not DoesEntityExist(obj) then
+        return false
+    end
+
+    return obj
+end

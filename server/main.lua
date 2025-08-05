@@ -37,6 +37,7 @@ RegisterNetEvent("property:buy", function(id)
     property:Buy(source)
 end)
 
+
 AddEventHandler('onResourceStart', function(resourceName)
     if (GetCurrentResourceName() ~= resourceName) then 
         return
