@@ -42,7 +42,7 @@ RegisterNetEvent("property:rental", function(id, rentalDays)
     if not property then
         return
     end
-
+    
     property:Rental(source, rentalDays)
 end)
 

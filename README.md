@@ -40,7 +40,7 @@ Crée une classe orientée objet côté serveur pour représenter une propriét�
 
 ### 🔧 Voie d’amélioration future :
 
-- Créer une **classe parent `Property`**, et des **classes enfants** :
+- Créer une **classe parent `Property`**, et des **classes enfants** : 
   - `HouseProperty`, `ApartmentProperty`, etc.  
   Ces classes auront des méthodes spécifiques.
 
@@ -64,8 +64,8 @@ Crée une classe orientée objet côté serveur pour représenter une propriét�
 
 ### 5. 💳 Achat / Location
 
-- [ ] Permettre à un joueur d’acheter ou louer une propriété
-- [ ] Supprimer le panneau une fois l’achat effectué
+- [ ] Permettre à un joueur d’acheter ou louer une propriété (Good)
+- [ ] Supprimer le panneau une fois l’achat effectué (Good)
 
 ---
 

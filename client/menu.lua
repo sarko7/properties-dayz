@@ -199,8 +199,9 @@ function openAccesPropertyMenu(propertyId, adresse, isOwner, statue, sellPrice, 
 
                     RageUI.Button("Louer la propriété", nil, {RightLabel = ("~b~%s$"):format(rentalPrice)}, true, {
                         onSelected = function()
-                            rentalDays = tonumber(keyboardInput("Entrer le nomnre de jour que vous souhaitez louer", nil, 10))
-                            TriggerServerEvent("property:rental", propertyId, rentalDays)
+                            rentalDays = keyboardInput("Entrer le nomnre de jour que vous souhaitez louer", nil, 10)
+                            print(rentalDays)
+                            TriggerServerEvent("property:rental", propertyId, tonumber(rentalDays))
                             menuAccesProperty.Closed()
                         end
                     })
